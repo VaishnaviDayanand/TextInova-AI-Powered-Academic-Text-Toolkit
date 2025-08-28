@@ -1,4 +1,5 @@
 streamlit
+Pillow
 PyPDF2
 scikit-learn
 numpy
