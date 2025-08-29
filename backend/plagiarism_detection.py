@@ -1,19 +1,33 @@
-# backend/plagiarism_detector.py
-from .intrinsic_detector import check_intrinsic_plagiarism
-from .extrinsic_detector import check_extrinsic_plagiarism
+from .utils import read_pdf, read_docx, read_txt
+from .intrinsic_detector import intrinsic_plagiarism_score
+from .AI_detector import detect_ai_text
 
-def run_plagiarism_detection(text, reference_texts):
+# Export AI_detector for external use
+AI_detector = detect_ai_text
+# Export intrinsic_detector for external use
+intrinsic_detector = intrinsic_plagiarism_score
+
+def process_file(uploaded_file):
     """
-    Runs both intrinsic and extrinsic plagiarism checks.
-    :param text: The text to check for plagiarism
-    :param reference_texts: List of reference texts to compare against (for intrinsic check)
-    :return: Boolean indicating if plagiarism is detected
+    Reads and extracts text based on file type.
     """
-    # Run intrinsic plagiarism check
-    intrinsic_plagiarism = check_intrinsic_plagiarism(text, reference_texts)
-    
-    # Run extrinsic plagiarism check
-    extrinsic_plagiarism = check_extrinsic_plagiarism(text)
-    
-    # If either intrinsic or extrinsic plagiarism is detected, return True
-    return intrinsic_plagiarism or extrinsic_plagiarism
+    file_type = uploaded_file.name.split('.')[-1].lower()
+
+    if file_type == 'pdf':
+        text = read_pdf(uploaded_file)
+    elif file_type == 'docx':
+        text = read_docx(uploaded_file)
+    elif file_type == 'txt':
+        text = read_txt(uploaded_file)
+    else:
+        raise ValueError("Unsupported file type")
+
+    return text
+
+
+def check_ai_generated(text):
+    return detect_ai_text(text)
+
+
+def check_intrinsic_plagiarism(text):
+    return intrinsic_plagiarism_score(text)
