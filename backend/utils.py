@@ -1,12 +1,17 @@
-import PyPDF2
+import pdfplumber
+from docx import Document
 
-def extract_text_from_file(uploaded_file):
-    if uploaded_file.type == "text/plain":
-        return uploaded_file.read().decode("utf-8")
-    elif uploaded_file.type == "application/pdf":
-        reader = PyPDF2.PdfReader(uploaded_file)
-        text = ""
-        for page in reader.pages:
-            text += page.extract_text()
-        return text
-    return ""
+def read_pdf(file):
+    text = ""
+    with pdfplumber.open(file) as pdf:
+        for page in pdf.pages:
+            if page.extract_text():
+                text += page.extract_text() + "\n"
+    return text
+
+def read_docx(file):
+    doc = Document(file)
+    return "\n".join([para.text for para in doc.paragraphs])
+
+def read_txt(file):
+    return file.read().decode('utf-8')
