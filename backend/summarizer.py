@@ -2,7 +2,7 @@ import torch
 from transformers import BartTokenizer, BartForConditionalGeneration
 import nltk
 import re
-import fitz  # python -m pip install pymupdf
+import fitz # python -m pip install pymupdf
 from pdf2image import convert_from_path
 import pytesseract
 
@@ -71,7 +71,7 @@ def clean_summary(text):
     text = re.sub(r'http\S+|www\S+|\bvisit\b.*|call.*|click here.*|Back to.*|Follow us.*|For confidential.*', '', text, flags=re.IGNORECASE)
     text = re.sub(r'\(US\$?.*?\)|£[\d\.]+|priced.*?copies?', '', text)
     text = re.sub(r'\bsamaritans\b.*', '', text, flags=re.IGNORECASE)
-    text = re.sub(r'\s+', ' ', text)  # Collapse multiple spaces
+    text = re.sub(r'\s+', ' ', text) # Collapse multiple spaces
     return text.strip()
 
 # ------------------------
@@ -194,3 +194,20 @@ if __name__ == "__main__":
     )
 
     print("\n🔹 Summary:\n", summary)
+[5/15, 8:56 PM] Vaishnavi Dayanand: import pdfplumber
+from docx import Document
+
+def read_pdf(file):
+    text = ""
+    with pdfplumber.open(file) as pdf:
+        for page in pdf.pages:
+            if page.extract_text():
+                text += page.extract_text() + "\n"
+    return text
+
+def read_docx(file):
+    doc = Document(file)
+    return "\n".join([para.text for para in doc.paragraphs])
+
+def read_txt(file):
+    return file.read().decode('utf-8')
