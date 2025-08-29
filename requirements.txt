@@ -11,3 +11,6 @@ spacy
 tqdm
 sentencepiece
 bs4
+read_pdf
+read_docx
+read_txt
