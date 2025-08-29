@@ -12,3 +12,7 @@ tqdm
 sentencepiece
 bs4
 pdfplumber
+Document
+read_pdf
+read_docx
+read_txt
