@@ -11,3 +11,4 @@ spacy
 tqdm
 sentencepiece
 bs4
+pdfplumber
