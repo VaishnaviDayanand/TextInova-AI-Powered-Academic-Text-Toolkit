@@ -17,10 +17,7 @@ def image_to_base64(image_path):
 def set_background(image_path):
     """Set the background image for the Streamlit app."""
     if os.path.exists(image_path):
-        # Convert the image to base64
         encoded_image = image_to_base64(image_path)
-        
-        # Create the background style using base64 image data and add text color white
         st.markdown(
             f"""
             <style>
@@ -33,33 +30,31 @@ def set_background(image_path):
                 color: white;
             }}
 
-            /* Make radio button labels yellow */
+            /* Mobile fix */
+            @media (max-width: 768px) {{
+                .stApp {{
+                    background-size: contain !important;
+                    background-attachment: scroll !important;
+                    background-repeat: no-repeat !important;
+                    background-position: top center !important;
+                }}
+            }}
+
+            /* Radio buttons yellow */
             .stRadio > div[role="radiogroup"] label {{
                 color: yellow !important;
                 font-weight: bold;
             }}
 
-            /* Ensure white color for text input and selectbox labels */
-            .stTextInput, .stTextArea, .stSelectbox, .stSlider, .stNumberInput {{
-                color: white;
+            /* Spinner (loading circle) yellow */
+            .stSpinner > div {{
+                border-top-color: yellow !important;
             }}
 
-            .stTextInput label, .stTextArea label, .stSelectbox label, .stSlider label, .stNumberInput label {{
-                color: white;
-            }}
-
-            .stButton, .stCheckbox, .stRadio label {{
-                color: white;
-            }}
-
-            .stButton button {{
-                color: yellow;
-                background-color: transparent;
-                border: 1px solid yellow;
-            }}
-
-            .css-1d391kg {{
-                color: white;
+            /* File name yellow */
+            .uploadedFileName {{
+                color: yellow !important;
+                font-weight: bold;
             }}
             </style>
             """,
