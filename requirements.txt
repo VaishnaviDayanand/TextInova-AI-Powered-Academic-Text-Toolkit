@@ -12,4 +12,6 @@ tqdm
 sentencepiece
 bs4
 pdfplumber
+docx
 Document
+utils
