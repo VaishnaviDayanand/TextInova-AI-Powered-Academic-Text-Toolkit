@@ -184,7 +184,7 @@ elif page == "Plagiarism Detection":
 
         /* Force text inside upload button to be black */
         .stFileUploader div[role="button"] span {
-            color: 000000 !important;
+            color: #000000 !important;
             font-weight: bold !important;
         }
 
