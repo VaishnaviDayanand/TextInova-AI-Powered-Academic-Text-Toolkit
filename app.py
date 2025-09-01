@@ -3,7 +3,7 @@ import base64
 import os
 from backend.utils import read_pdf, read_docx, read_txt
 from backend.plagiarism_detection import AI_detector
-from backend.plagiarism_detection import intrinsic_detector
+from backend.intrinsic_detector import intrinsic_plagiarism_score
 from backend.summarizer import summarize
 from backend.paraphraser import paraphrase_text
 
@@ -29,35 +29,38 @@ def set_background(image_path):
                 background-size: cover;
                 background-attachment: fixed;
                 background-position: center;
-                height: 100vh; /* Ensure the background covers the entire screen */
-                color: white; /* Make all text white */
+                height: 100vh;
+                color: white;
+            }}
+
+            /* Make radio button labels yellow */
+            .stRadio > div[role="radiogroup"] label {{
+                color: yellow !important;
+                font-weight: bold;
             }}
 
             /* Ensure white color for text input and selectbox labels */
             .stTextInput, .stTextArea, .stSelectbox, .stSlider, .stNumberInput {{
-                color: white; /* Text inside input fields */
+                color: white;
             }}
 
             .stTextInput label, .stTextArea label, .stSelectbox label, .stSlider label, .stNumberInput label {{
-                color: white; /* Labels of text inputs and other widgets */
+                color: white;
             }}
 
             .stButton, .stCheckbox, .stRadio label {{
-                color: white; /* Button and checkbox labels */
+                color: white;
             }}
 
-            /* Change button text color to yellow */
             .stButton button {{
-                color: yellow; /* Set button text color to yellow */
-                background-color: transparent; /* Transparent background to preserve the original button styling */
-                border: 1px solid yellow; /* Optional: Adds a yellow border to the button */
+                color: yellow;
+                background-color: transparent;
+                border: 1px solid yellow;
             }}
 
-            /* Make the header white */
             .css-1d391kg {{
-                color: white; /* Headers with white font color */
+                color: white;
             }}
-
             </style>
             """,
             unsafe_allow_html=True
@@ -79,21 +82,18 @@ elif page == "Paraphrasing":
 
     text = st.text_area("Enter text to paraphrase:")
 
-    # Add option selector for paraphrasing type
     option = st.selectbox(
         "Choose paraphrasing style:",
         ("Normal", "Academic Filter", "First Person Removal", "Active/Passive Voice Change")
     )
 
-    # If Active/Passive Voice Change is selected, let user choose which voice
-    voice_type = "passive" # default
+    voice_type = "passive"
     if option == "Active/Passive Voice Change":
         voice_type = st.radio("Choose voice conversion:", ("Passive", "Active"))
 
     if st.button("Paraphrase"):
         if text:
             with st.spinner("Paraphrasing..."):
-                # Map UI option to function option values
                 option_map = {
                     "Normal": "normal",
                     "Academic Filter": "academic_filter",
@@ -113,7 +113,6 @@ elif page == "Text Summarization":
     
     input_text = st.text_area("Enter text to summarize:", height=300)
 
-    # Filter options
     st.subheader("📊 Summarization Settings")
     summary_type = st.selectbox("Choose summary type:", ["abstractive", "extractive"])
     tone = st.selectbox("Choose tone:", ["neutral", "formal", "informal"])
@@ -166,11 +165,17 @@ elif page == "Plagiarism Detection":
     st.header("Plagiarism Detection Tool 🔍")
 
     uploaded_file = st.file_uploader("Upload a file (PDF, DOCX, or TXT)", type=["pdf", "docx", "txt"])
+
+    # Display filename in yellow if uploaded
+    if uploaded_file is not None:
+        st.markdown(
+            f"<p style='color:yellow; font-weight:bold;'>📂 Selected File: {uploaded_file.name}</p>",
+            unsafe_allow_html=True
+        )
+
     input_text = st.text_area("Or paste your text here:", height=300, key="plag_text_area")
 
     final_text = ""
-
-    # Only process the uploaded file if it exists
     if uploaded_file is not None:
         if uploaded_file.name.endswith(".pdf"):
             final_text = read_pdf(uploaded_file)
@@ -185,17 +190,13 @@ elif page == "Plagiarism Detection":
 
     if st.button("Check for Integrity") and final_text:
         with st.spinner("Analyzing..."):
-            # 1️⃣ AI Detection
             ai_result = AI_detector(final_text)
-            # 2️⃣ Intrinsic Plagiarism Check
-            intrinsic_result =intrinsic_detector(final_text)
+            intrinsic_result = intrinsic_plagiarism_score(final_text)
 
-            # AI Authorship Results
             st.subheader("AI Authorship Detection 🤖🧑‍💻")
             st.write(f"**Human Probability:** {ai_result['Human Probability']}%")
             st.write(f"**AI Probability:** {ai_result['AI Probability']}%")
 
-            # Intrinsic Similarity Results
             st.subheader("Intrinsic Similarity Detection 🔄")
             st.write(f"**Average Similarity Score:** {intrinsic_result['similarity_score']}%")
 
@@ -215,7 +216,6 @@ elif page == "Plagiarism Detection":
             else:
                 st.success("No significant self-plagiarism detected!")
 
-    # Legend (Optional)
     st.markdown("""  
     - 🤖 **AI Authorship Detection**: Detects if the text is likely AI-generated.  
     - 🔄 **Intrinsic Similarity Detection**: Checks for repeated patterns within your document.
@@ -229,19 +229,4 @@ elif page == "About":
 
     This tool is designed to assist students, researchers, and professionals in producing high-quality academic content. Key features include:
 
-    - ✍️ **Paraphrasing Tool:** Helps rewrite sentences while maintaining the original meaning and in academic tone.
-    - 📚 **Text Summarization:** Condenses long documents into clear summaries, with tone and length customization.
-    - 🔎 **Academic Integrity Checker:** Detects AI-generated content and checks for intrinsic plagiarism within your text.
-
-    #### 👥 **Developers:**
-    - Vaishnavi D
-    - G S Priya
-    - Sudeep Kumar G
-    - Preetham K
-
-    #### 📝 **Disclaimer:**
-    This app is a prototype for academic assistance and **does not guarantee 100% accuracy.** Always review generated outputs critically.
-
-    ---
-    **Tech Stack:** Streamlit, Hugging Face Transformers, Python  
-    """, unsafe_allow_html=True)
+    - ✍️ **Paraphrasing Tool:** Helps rewrite sentences while maintaining the original
