@@ -13,3 +13,6 @@ sentencepiece
 bs4
 pdfplumber
 python-docx
+pymupdf
+pdf2image
+pytesseract
