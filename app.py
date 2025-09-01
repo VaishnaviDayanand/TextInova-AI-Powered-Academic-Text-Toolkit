@@ -171,13 +171,13 @@ elif page == "Plagiarism Detection":
         <style>
         /* Label above the uploader */
         .stFileUploader label {
-            color: white !important;
+            color: grey !important;
             font-weight: bold;
         }
 
         /* Upload button container (Browse files) */
         .stFileUploader div[role="button"] {
-            background-color: #000000 !important;
+            background-color: black !important;
             border: 1px solid #ccc !important;
             border-radius: 5px !important;
         }
