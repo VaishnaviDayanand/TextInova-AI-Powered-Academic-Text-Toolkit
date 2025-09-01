@@ -2,12 +2,13 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 def intrinsic_plagiarism_score(text):
-    sentences = [s for s in text.split('\n') if len(s.strip()) > 20] # filter short lines
+    sentences = [s for s in text.split('\n') if len(s.strip()) > 20]  # filter short lines
     if len(sentences) < 2:
         return {
             "similarity_score": 0,
             "similar_pairs": []
         }
+    
     vectorizer = TfidfVectorizer().fit_transform(sentences)
     similarity_matrix = cosine_similarity(vectorizer)
 
@@ -19,7 +20,7 @@ def intrinsic_plagiarism_score(text):
     for i in range(n):
         for j in range(i + 1, n):
             sim = similarity_matrix[i, j]
-            if sim > 0.7: # You can tweak this threshold
+            if sim > 0.7:  # tweak threshold if needed
                 similar_pairs.append({
                     "sentence_1": sentences[i],
                     "sentence_2": sentences[j],
@@ -32,4 +33,5 @@ def intrinsic_plagiarism_score(text):
 
     return {
         "similarity_score": round(avg_similarity, 2),
-        "similar_pairs
+        "similar_pairs": similar_pairs
+    }
