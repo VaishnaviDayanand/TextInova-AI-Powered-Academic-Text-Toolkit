@@ -171,7 +171,7 @@ elif page == "Plagiarism Detection":
         <style>
         /* Label above the uploader */
         .stFileUploader label {
-            color: grey !important;
+            color: white !important;
             font-weight: bold;
         }
 
@@ -184,7 +184,7 @@ elif page == "Plagiarism Detection":
 
         /* Force text inside upload button to be black */
         .stFileUploader div[role="button"] span {
-            color: #000000 !important;
+            color: black !important;
             font-weight: bold !important;
         }
 
