@@ -1,6 +1,6 @@
-from .utils import read_pdf, read_docx, read_txt
-from .intrinsic_detector import intrinsic_plagiarism_score
-from .AI_detector import detect_ai_text
+from backend.utils import read_pdf, read_docx, read_txt
+from backend.intrinsic_detector import intrinsic_plagiarism_score
+from backend.AI_detector import detect_ai_text
 
 # Export AI_detector for external use
 AI_detector = detect_ai_text
