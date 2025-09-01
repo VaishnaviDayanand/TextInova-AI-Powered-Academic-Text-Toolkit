@@ -165,13 +165,69 @@ elif page == "Plagiarism Detection":
     set_background("assets/plagiarism.png")
     st.header("Plagiarism Detection Tool 🔍")
 
-    uploaded_file = st.file_uploader("Upload a file (PDF, DOCX, or TXT)", type=["pdf", "docx", "txt"])
+    # Custom CSS for uploader styling
+    st.markdown(
+        """
+        <style>
+        /* Label above the uploader */
+        .stFileUploader label {
+            color: white !important;
+            font-weight: bold;
+        }
+
+        /* Upload button text */
+        .stFileUploader div[role="button"] {
+            color: black !important;
+            background-color: #f0f0f0 !important;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* On hover for upload button */
+        .stFileUploader div[role="button"]:hover {
+            background-color: #ddd !important;
+            color: black !important;
+        }
+
+        /* Uploaded file name text */
+        .uploadedFileName {
+            color: yellow !important;
+            font-weight: bold;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+    uploaded_file = st.file_uploader(
+        "Upload a file (PDF, DOCX, or TXT)", 
+        type=["pdf", "docx", "txt"],
+        label_visibility="visible"
+    )
     input_text = st.text_area("Or paste your text here:", height=300, key="plag_text_area")
 
     final_text = ""
 
     # Only process the uploaded file if it exists
     if uploaded_file is not None:
+        # Inject JS+CSS to highlight uploaded file name
+        st.markdown(
+            """
+            <script>
+            setTimeout(() => {
+                let els = window.parent.document.querySelectorAll('span');
+                els.forEach(el => {
+                    if (el.innerText.includes('.pdf') || el.innerText.includes('.docx') || el.innerText.includes('.txt')) {
+                        el.style.color = 'yellow';
+                        el.style.fontWeight = 'bold';
+                    }
+                });
+            }, 100);
+            </script>
+            """,
+            unsafe_allow_html=True
+        )
+
         if uploaded_file.name.endswith(".pdf"):
             final_text = read_pdf(uploaded_file)
         elif uploaded_file.name.endswith(".docx"):
@@ -188,7 +244,7 @@ elif page == "Plagiarism Detection":
             # 1️⃣ AI Detection
             ai_result = AI_detector(final_text)
             # 2️⃣ Intrinsic Plagiarism Check
-            intrinsic_result =intrinsic_detector(final_text)
+            intrinsic_result = intrinsic_detector(final_text)
 
             # AI Authorship Results
             st.subheader("AI Authorship Detection 🤖🧑‍💻")
