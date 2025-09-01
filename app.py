@@ -177,22 +177,25 @@ elif page == "Plagiarism Detection":
 
         /* Upload button container (Browse files) */
         .stFileUploader div[role="button"] {
-            color: black !important;               /* Text color */
-            background-color: #f0f0f0 !important;  /* Light background */
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-weight: bold;
+            background-color: #f0f0f0 !important;
+            border: 1px solid #ccc !important;
+            border-radius: 5px !important;
         }
 
-        /* Make sure the icon inside uploader is also black */
+        /* Force text inside upload button to be black */
+        .stFileUploader div[role="button"] span {
+            color: black !important;
+            font-weight: bold !important;
+        }
+
+        /* Force icon inside upload button to be black */
         .stFileUploader div[role="button"] svg {
             fill: black !important;
         }
 
-        /* On hover for upload button */
+        /* On hover */
         .stFileUploader div[role="button"]:hover {
             background-color: #ddd !important;
-            color: black !important;
         }
 
         /* Uploaded file name text */
