@@ -1,4 +1,4 @@
-Vaishnavi Dayanand: import re
+import re
 from transformers import PegasusForConditionalGeneration, PegasusTokenizer
 
 def remove_first_person(text):
@@ -19,10 +19,10 @@ def simulate_academic_style(text):
 
 def convert_voice(text, to_voice="passive"):
     if to_voice == "active":
-        # Simple active voice conversion (very basic)
+        # Very basic active voice conversion
         return re.sub(r"(\b\w+\b) was (\w+) by (\b\w+\b)", r"\3 \2 \1", text)
     elif to_voice == "passive":
-        # Simple passive voice conversion (very basic)
+        # Very basic passive voice conversion
         return re.sub(r"(\b\w+\b) (\w+) (\b\w+\b)", r"\3 was \2 by \1", text)
     return text
 
@@ -38,8 +38,8 @@ def paraphrase_text(text, option="normal", voice_type="passive"):
     inputs = tokenizer([text], truncation=True, padding="longest", return_tensors="pt")
 
     input_length = inputs['input_ids'].shape[1]
-    max_length = input_length + 10 # Slight buffer to avoid early truncation
-    min_length = max(input_length - 10, 20) # Ensure minimum length stays reasonable
+    max_length = input_length + 10  # buffer
+    min_length = max(input_length - 10, 20)
 
     outputs = model.generate(
         **inputs,
@@ -52,9 +52,11 @@ def paraphrase_text(text, option="normal", voice_type="passive"):
     )
     paraphrased = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
+    # Apply academic filter
     if option == "academic_filter":
         paraphrased = simulate_academic_style(paraphrased)
 
+    # Apply voice conversion
     if option == "active_passive":
         paraphrased = convert_voice(paraphrased, to_voice=voice_type)
 
