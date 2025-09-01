@@ -1,119 +1,48 @@
-📚 TextInova - AI-powered Academic Text Toolkit
+# 📘 Textinova: AI-Powered Academic Text Toolkit  
 
-🚀 TextInova is an AI-powered academic assistant that helps students, educators, and researchers with:
+[![Streamlit App](https://img.shields.io/badge/🚀%20Live%20App-Open%20in%20Streamlit-blue?style=for-the-badge)](https://your-app-link.streamlit.app)
 
-✨ Paraphrasing (with Academic English filter option)
+---
 
-📝 Text Summarization (extractive + abstractive, with word/length & tone options)
+## 🛠 Overview  
+**Textinova** is an AI-powered toolkit designed to assist students, researchers, and professionals in producing high-quality academic content.  
+It integrates **Paraphrasing**, **Text Summarization**, and **Plagiarism Detection** in one easy-to-use platform.
 
-🔍 Plagiarism Detection (AI-based + intrinsic detection using stylometry)
+---
 
-🌟 Features
+## ✨ Features  
 
-✅ Paraphrasing
+- ✍️ **Paraphrasing Tool**  
+  Rewrite sentences while preserving meaning, with academic tone and active/passive voice conversion.  
 
-Rewrites text while maintaining meaning.
+- 📚 **Text Summarization**  
+  Generate concise summaries using **abstractive** and **extractive** methods, with tone and length customization.  
 
-Includes an Academic English filter for formal writing.
+- 🔎 **Plagiarism & Integrity Checker**  
+  Detect AI-generated content and check for **intrinsic plagiarism** (self-similarity within documents).  
 
-✅ Text Summarization
+- 🎨 **Custom UI**  
+  Dark-themed interface with custom backgrounds, styled buttons, and responsive design.
 
-Provides both extractive and abstractive summaries.
+---
 
-Option to set tone (formal, casual, etc.).
+## 🚀 Live Demo  
 
-Control summary length by number of words/sentences.
+👉 Try the app here: [Textinova Live App](https://your-app-link.streamlit.app)  
 
-✅ Plagiarism Detection
+---
 
-AI-based detection (checks against AI-generated content).
+## 👥 Contributors  
 
-Intrinsic plagiarism detection (stylometry ML-based, checks inconsistencies within text).
+- **Vaishnavi D**  
+- **G S Priya**  
+- **Sudeep Kumar G**  
+- **Preetham K**  
 
-Displays plagiarism percentage for uploaded files (PDF/DOC/TXT).
+---
 
-🏗️ Project Structure
-textinova/
-│── app.py                 # Main Streamlit app
-│── requirements.txt       # Dependencies for Streamlit Cloud
-│── README.md              # Project documentation
-│── assets/                # Logos, icons, images
-│── backend/
-│   ├── utils.py           # File reading & helpers
-│   ├── paraphrase.py      # Paraphrasing logic
-│   ├── summarizer.py      # Summarization logic
-│   ├── plagiarism_ai.py   # AI plagiarism detection
-│   ├── plagiarism_intrinsic.py # Intrinsic detection
+## 📝 Disclaimer  
+This app is a prototype for academic assistance and **does not guarantee 100% accuracy**.  
+Users are encouraged to review outputs critically before use.  
 
-⚙️ Installation (Local Setup)
-
-Clone the repository:
-
-git clone https://github.com/<your-username>/textinova-ai-powered-academic-text-toolkit.git
-cd textinova-ai-powered-academic-text-toolkit
-
-
-Create a virtual environment (optional but recommended):
-
-python -m venv venv
-source venv/bin/activate   # On Linux/Mac
-venv\Scripts\activate      # On Windows
-
-
-Install dependencies:
-
-pip install -r requirements.txt
-
-
-Run the app:
-
-streamlit run app.py
-
-☁️ Deployment on Streamlit Cloud
-
-Push your code to GitHub with:
-
-app.py at the root
-
-requirements.txt at the root
-
-README.md at the root
-
-Go to Streamlit Cloud
-.
-
-Create a new app → connect your GitHub repo → select branch and app.py.
-
-Deploy 🎉
-
-📊 Tech Stack
-
-Python 3.9+
-
-Streamlit (frontend & UI)
-
-Transformers (Facebook BART, Pegasus, etc.) for summarization
-
-PyTorch for model execution
-
-scikit-learn + stylometry ML models for intrinsic plagiarism
-
-PyPDF2 / python-docx for file handling
-
-🧑‍🤝‍🧑 Contributors
-
-👩‍💻 Developers:
-
-Vaishnavi Dayanand
-
-📌 Future Enhancements
-
-🌐 Add support for multi-language paraphrasing & summarization.
-
-📑 Integration with reference managers (Zotero, Mendeley).
-
-⚡ Improve plagiarism detection using hybrid semantic models.
-
-📜 License
-
-This project is licensed under the MIT License – free to use, modify, and distribute.
+---
