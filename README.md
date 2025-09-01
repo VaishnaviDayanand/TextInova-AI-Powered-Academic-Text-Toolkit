@@ -1,10 +1,8 @@
----
-
 📘 TextiNova – AI-Powered Academic Text Toolkit
 
 An AI-powered toolkit designed to assist students, researchers, and professionals in academic writing. The toolkit includes features for paraphrasing, summarization, and plagiarism detection with support for academic tone.
 
-🚀 Live App: TextiNova on Streamlit Cloud (https://textinova.streamlit.app/)
+🚀 Live App: TextiNova on Streamlit Cloud  https://textinova.streamlit.app/
 
 
 ---
