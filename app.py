@@ -14,47 +14,54 @@ def image_to_base64(image_path):
         return base64.b64encode(img_file.read()).decode()
 
 # Set background image for the app and apply white text styling
+# Set background image for the app and apply white/yellow text styling
 def set_background(image_path):
-    """Set the background image for the Streamlit app."""
+    """Set the background image for the Streamlit app with fallback color."""
     if os.path.exists(image_path):
         encoded_image = image_to_base64(image_path)
+        
         st.markdown(
             f"""
             <style>
             .stApp {{
-                background-image: url("data:image/png;base64,{encoded_image}");
+                background: url("data:image/png;base64,{encoded_image}") no-repeat center top fixed,
+                            #000000; /* fallback solid black */
                 background-size: cover;
-                background-attachment: fixed;
-                background-position: center;
-                height: 100vh;
+                background-attachment: scroll;
+                background-position: top center;
+                color: white; /* Make default text white */
+            }}
+
+            /* Text fields, labels, radios, and selects in white/yellow */
+            .stTextInput, .stTextArea, .stSelectbox, .stSlider, .stNumberInput {{
+                color: white;
+            }}
+            .stTextInput label, .stTextArea label, .stSelectbox label, 
+            .stSlider label, .stNumberInput label {{
                 color: white;
             }}
 
-            /* Mobile fix */
-            @media (max-width: 768px) {{
-                .stApp {{
-                    background-size: contain !important;
-                    background-attachment: scroll !important;
-                    background-repeat: no-repeat !important;
-                    background-position: top center !important;
-                }}
-            }}
-
-            /* Radio buttons yellow */
-            .stRadio > div[role="radiogroup"] label {{
+            /* Sidebar radio buttons yellow */
+            .stRadio > label, .stRadio div[role='radiogroup'] label {{
                 color: yellow !important;
-                font-weight: bold;
             }}
 
-            /* Spinner (loading circle) yellow */
-            .stSpinner > div {{
-                border-top-color: yellow !important;
-            }}
-
-            /* File name yellow */
+            /* Uploaded file name yellow */
             .uploadedFileName {{
                 color: yellow !important;
                 font-weight: bold;
+            }}
+
+            /* Button style */
+            .stButton button {{
+                color: yellow;
+                background-color: transparent;
+                border: 1px solid yellow;
+            }}
+
+            /* Spinner (loading) in yellow */
+            .stSpinner > div {{
+                color: yellow !important;
             }}
             </style>
             """,
