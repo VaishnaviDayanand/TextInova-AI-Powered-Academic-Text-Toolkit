@@ -177,7 +177,7 @@ elif page == "Plagiarism Detection":
 
         /* Upload button container (Browse files) */
         .stFileUploader div[role="button"] {
-            background-color: #f0f0f0 !important;
+            background-color: #000000 !important;
             border: 1px solid #ccc !important;
             border-radius: 5px !important;
         }
