@@ -175,12 +175,18 @@ elif page == "Plagiarism Detection":
             font-weight: bold;
         }
 
-        /* Upload button text */
+        /* Upload button container (Browse files) */
         .stFileUploader div[role="button"] {
-            color: black !important;
-            background-color: #f0f0f0 !important;
+            color: black !important;               /* Text color */
+            background-color: #f0f0f0 !important;  /* Light background */
             border: 1px solid #ccc;
             border-radius: 5px;
+            font-weight: bold;
+        }
+
+        /* Make sure the icon inside uploader is also black */
+        .stFileUploader div[role="button"] svg {
+            fill: black !important;
         }
 
         /* On hover for upload button */
