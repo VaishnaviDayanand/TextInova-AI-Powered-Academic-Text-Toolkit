@@ -28,7 +28,7 @@ It integrates **Paraphrasing**, **Text Summarization**, and **Plagiarism Detecti
 
 ## 🚀 Live Demo  
 
-👉 Try the app here: [Textinova Live App](https://your-app-link.streamlit.app)  
+👉 Try the app here: [Textinova Live App]Textinova.streamlit.app 
 
 ---
 
