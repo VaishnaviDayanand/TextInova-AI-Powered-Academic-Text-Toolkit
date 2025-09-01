@@ -229,4 +229,19 @@ elif page == "About":
 
     This tool is designed to assist students, researchers, and professionals in producing high-quality academic content. Key features include:
 
-    - ✍️ **Paraphrasing Tool:** Helps rewrite sentences while maintaining the original
+    - ✍️ **Paraphrasing Tool:** Helps rewrite sentences while maintaining the original meaning and in academic tone.
+    - 📚 **Text Summarization:** Condenses long documents into clear summaries, with tone and length customization.
+    - 🔎 **Academic Integrity Checker:** Detects AI-generated content and checks for intrinsic plagiarism within your text.
+
+    #### 👥 **Developers:**
+    - Vaishnavi D
+    - G S Priya
+    - Sudeep Kumar G
+    - Preetham K
+
+    #### 📝 **Disclaimer:**
+    This app is a prototype for academic assistance and **does not guarantee 100% accuracy.** Always review generated outputs critically.
+
+    ---
+    **Tech Stack:** Streamlit, Hugging Face Transformers, Python  
+    """, unsafe_allow_html=True)
