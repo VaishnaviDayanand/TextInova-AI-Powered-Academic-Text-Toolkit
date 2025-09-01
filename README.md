@@ -1,4 +1,4 @@
-📘 TextiNova – AI-Powered Academic Text Toolkit
+##📘 TextiNova – AI-Powered Academic Text Toolkit
 
 An AI-powered toolkit designed to assist students, researchers, and professionals in academic writing. The toolkit includes features for paraphrasing, summarization, and plagiarism detection with support for academic tone.
 
