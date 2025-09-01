@@ -12,6 +12,4 @@ tqdm
 sentencepiece
 bs4
 pdfplumber
-docx
-Document
-backend.utils
+python-docx
