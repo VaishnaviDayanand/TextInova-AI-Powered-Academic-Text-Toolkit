@@ -3,83 +3,98 @@ import base64
 import os
 from backend.utils import read_pdf, read_docx, read_txt
 from backend.plagiarism_detection import AI_detector
-from backend.intrinsic_detector import intrinsic_plagiarism_score
+from backend.plagiarism_detection import intrinsic_detector
 from backend.summarizer import summarize
 from backend.paraphraser import paraphrase_text
 
-# Convert image to base64 string
+# -----------------------
+# Convert image to base64
+# -----------------------
 def image_to_base64(image_path):
     """Convert image to base64 string."""
     with open(image_path, "rb") as img_file:
         return base64.b64encode(img_file.read()).decode()
 
-# Set background image for the app and apply white text styling
-# Set background image for the app and apply white/yellow text styling
-def set_background(image_path):
-    """Set the background image for the Streamlit app with fallback color."""
+# -----------------------
+# Background setup
+# -----------------------
+def set_background(image_path, responsive=False):
+    """Set the background image for the Streamlit app with option for responsiveness."""
     if os.path.exists(image_path):
         encoded_image = image_to_base64(image_path)
-        
-        st.markdown(
-            f"""
+
+        if responsive:
+            style = f"""
+            <style>
+            .stApp {{
+                background: url("data:image/png;base64,{encoded_image}") no-repeat center center fixed;
+                background-size: cover;
+                color: white;
+            }}
+            </style>
+            """
+        else:
+            style = f"""
             <style>
             .stApp {{
                 background: url("data:image/png;base64,{encoded_image}") no-repeat center top fixed,
-                            #000000; /* fallback solid black */
+                            #000000;
                 background-size: cover;
                 background-attachment: scroll;
                 background-position: top center;
-                color: white; /* Make default text white */
-            }}
-
-            /* Text fields, labels, radios, and selects in white/yellow */
-            .stTextInput, .stTextArea, .stSelectbox, .stSlider, .stNumberInput {{
                 color: white;
-            }}
-            .stTextInput label, .stTextArea label, .stSelectbox label, 
-            .stSlider label, .stNumberInput label {{
-                color: white;
-            }}
-
-            /* Sidebar radio buttons yellow */
-            .stRadio > label, .stRadio div[role='radiogroup'] label {{
-                color: yellow !important;
-            }}
-
-            /* Uploaded file name yellow */
-            .uploadedFileName {{
-                color: yellow !important;
-                font-weight: bold;
-            }}
-
-            /* Button style */
-            .stButton button {{
-                color: yellow;
-                background-color: transparent;
-                border: 1px solid yellow;
-            }}
-
-            /* Spinner (loading) in yellow */
-            .stSpinner > div {{
-                color: yellow !important;
             }}
             </style>
-            """,
-            unsafe_allow_html=True
-        )
+            """
+
+        st.markdown(style, unsafe_allow_html=True)
     else:
         st.write(f"Image not found at {image_path}. Please check the path.")
 
+# -----------------------
+# Global CSS
+# -----------------------
+st.markdown(
+    """
+    <style>
+    /* Radio button labels */
+    div[role="radiogroup"] label span {{
+        color: yellow !important;
+        font-weight: bold;
+    }}
+
+    /* Uploaded file name */
+    .uploadedFileName {{
+        color: yellow !important;
+        font-weight: bold;
+    }}
+
+    /* Spinner text */
+    .stSpinner > div > div {{
+        color: yellow !important;
+        font-weight: bold;
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# -----------------------
 # Sidebar Navigation
+# -----------------------
 st.sidebar.title("Navigation")
 page = st.sidebar.radio("Go to", ["Home", "Paraphrasing", "Text Summarization", "Plagiarism Detection", "About"])
 
+# -----------------------
 # Routing Pages
+# -----------------------
 if page == "Home":
-    set_background("assets/home.png")
+    set_background("assets/home.png", responsive=True)  # responsive on home page
+    st.header("Welcome to TextiNova ✨")
+    st.write("An AI-powered toolkit for academic writing.")
 
 elif page == "Paraphrasing":
-    set_background("assets/paraphraser.png")
+    set_background("assets/paraphraser.png")  # fixed
     st.header("Paraphrasing Tool ✍️")
 
     text = st.text_area("Enter text to paraphrase:")
@@ -110,7 +125,7 @@ elif page == "Paraphrasing":
             st.warning("Please enter some text.")
 
 elif page == "Text Summarization":
-    set_background("assets/summarization.png")
+    set_background("assets/summarization.png")  # fixed
     st.header("Text Summarization Tool 📚")
     
     input_text = st.text_area("Enter text to summarize:", height=300)
@@ -163,21 +178,14 @@ elif page == "Text Summarization":
             st.warning("Please enter some text!")
 
 elif page == "Plagiarism Detection":
-    set_background("assets/plagiarism.png")
+    set_background("assets/plagiarism.png")  # fixed
     st.header("Plagiarism Detection Tool 🔍")
 
     uploaded_file = st.file_uploader("Upload a file (PDF, DOCX, or TXT)", type=["pdf", "docx", "txt"])
-
-    # Display filename in yellow if uploaded
-    if uploaded_file is not None:
-        st.markdown(
-            f"<p style='color:yellow; font-weight:bold;'>📂 Selected File: {uploaded_file.name}</p>",
-            unsafe_allow_html=True
-        )
-
     input_text = st.text_area("Or paste your text here:", height=300, key="plag_text_area")
 
     final_text = ""
+
     if uploaded_file is not None:
         if uploaded_file.name.endswith(".pdf"):
             final_text = read_pdf(uploaded_file)
@@ -187,13 +195,15 @@ elif page == "Plagiarism Detection":
             final_text = read_txt(uploaded_file)
         else:
             st.warning("Unsupported file type!")
+        st.markdown(f"<p class='uploadedFileName'>📂 Selected file: {uploaded_file.name}</p>", unsafe_allow_html=True)
+
     elif input_text.strip() != "":
         final_text = input_text
 
     if st.button("Check for Integrity") and final_text:
         with st.spinner("Analyzing..."):
             ai_result = AI_detector(final_text)
-            intrinsic_result = intrinsic_plagiarism_score(final_text)
+            intrinsic_result = intrinsic_detector(final_text)
 
             st.subheader("AI Authorship Detection 🤖🧑‍💻")
             st.write(f"**Human Probability:** {ai_result['Human Probability']}%")
@@ -218,31 +228,26 @@ elif page == "Plagiarism Detection":
             else:
                 st.success("No significant self-plagiarism detected!")
 
-    st.markdown("""  
-    - 🤖 **AI Authorship Detection**: Detects if the text is likely AI-generated.  
-    - 🔄 **Intrinsic Similarity Detection**: Checks for repeated patterns within your document.
-    """)
-
 elif page == "About":
-    set_background("assets/about.png")
+    set_background("assets/about.png")  # fixed
     st.header("About the Toolkit 📘")
     st.markdown("""
     ### 🛠 **Academic Writing Assistant**
 
     This tool is designed to assist students, researchers, and professionals in producing high-quality academic content. Key features include:
 
-    - ✍️ **Paraphrasing Tool:** Helps rewrite sentences while maintaining the original meaning and in academic tone.
-    - 📚 **Text Summarization:** Condenses long documents into clear summaries, with tone and length customization.
-    - 🔎 **Academic Integrity Checker:** Detects AI-generated content and checks for intrinsic plagiarism within your text.
+    - ✍️ **Paraphrasing Tool:** Helps rewrite sentences while maintaining the original meaning and in academic tone.  
+    - 📚 **Text Summarization:** Condenses long documents into clear summaries, with tone and length customization.  
+    - 🔎 **Academic Integrity Checker:** Detects AI-generated content and checks for intrinsic plagiarism within your text.  
 
-    #### 👥 **Developers:**
-    - Vaishnavi D
-    - G S Priya
-    - Sudeep Kumar G
-    - Preetham K
+    #### 👥 **Developers:**  
+    - Vaishnavi D  
+    - G S Priya  
+    - Sudeep Kumar G  
+    - Preetham K  
 
-    #### 📝 **Disclaimer:**
-    This app is a prototype for academic assistance and **does not guarantee 100% accuracy.** Always review generated outputs critically.
+    #### 📝 **Disclaimer:**  
+    This app is a prototype for academic assistance and **does not guarantee 100% accuracy.** Always review generated outputs critically.  
 
     ---
     **Tech Stack:** Streamlit, Hugging Face Transformers, Python  
